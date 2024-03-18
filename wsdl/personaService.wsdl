@@ -1,0 +1,88 @@
+<definitions
+  name="YourService"
+  targetNamespace="http://example.com/your-service.wsdl"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:tns="http://example.com/your-service.wsdl"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+>
+
+  <message name="getAllRequest"></message>
+  <message name="getAllResponse">
+    <part name="result" type="xsd:string[]"></part>
+  </message>
+
+  <message name="sendDataRequest">
+    <part name="nombre" type="xsd:string"></part>
+    <part name="apellido" type="xsd:string"></part>
+    <part name="ci" type="xsd:string"></part>
+    <part name="telefono" type="xsd:string"></part>
+  </message>
+  <message name="sendDataResponse">
+    <part name="success" type="xsd:boolean"></part>
+  </message>
+
+  <!-- Nuevo mensaje para solicitud getById -->
+  <message name="getByIdRequest">
+    <part name="id" type="xsd:int"></part>
+  </message>
+
+  <!-- Nuevo mensaje para respuesta getById -->
+  <message name="getByIdResponse">
+    <part name="persona" type="xsd:string"></part>
+  </message>
+
+  <portType name="YourPortType">
+    <operation name="getAll">
+      <input message="tns:getAllRequest"></input>
+      <output message="tns:getAllResponse"></output>
+    </operation>
+    <operation name="sendData">
+      <input message="tns:sendDataRequest"></input>
+      <output message="tns:sendDataResponse"></output>
+    </operation>
+    <!-- Nueva operación getById -->
+    <operation name="getById">
+      <input message="tns:getByIdRequest"></input>
+      <output message="tns:getByIdResponse"></output>
+    </operation>
+  </portType>
+
+  <binding name="YourBinding" type="tns:YourPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"></soap:binding>
+    <operation name="getAll">
+      <soap:operation soapAction="getAll"></soap:operation>
+      <input>
+        <soap:body use="encoded" namespace="urn:examples:your-service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></soap:body>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:examples:your-service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></soap:body>
+      </output>
+    </operation>
+    <operation name="sendData">
+      <soap:operation soapAction="sendData"></soap:operation>
+      <input>
+        <soap:body use="encoded" namespace="urn:examples:your-service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></soap:body>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:examples:your-service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></soap:body>
+      </output>
+    </operation>
+    <!-- Configuración de la operación getById -->
+    <operation name="getById">
+      <soap:operation soapAction="getById"></soap:operation>
+      <input>
+        <soap:body use="encoded" namespace="urn:examples:your-service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></soap:body>
+      </input>
+      <output>
+        <soap:body use="encoded" namespace="urn:examples:your-service" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"></soap:body>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="YourService">
+    <port name="YourPort" binding="tns:YourBinding">
+      <soap:address location="http://localhost:3000/soap-service"></soap:address>
+    </port>
+  </service>
+</definitions>
